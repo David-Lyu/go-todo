@@ -1,0 +1,32 @@
+Todo App:
+
+MVP
+- User can add todo
+- User can delete todo
+- User can check off todo
+- User can edit todo
+
+Nice to haves:
+- Calendar
+- sub tasks
+- Time limit
+- Alerts
+
+Data Storage: JSON
+- DB vs JSON
+- What DB? Relational or non relational?
+- No ORM this time takes to long
+- For learning purposes file parsing is good
+
+Step 1)
+- Create a json parser
+
+Step 2)
+- Create task
+
+Step 3)
+- Remove task
+
+Step 4)
+- Edit task
+

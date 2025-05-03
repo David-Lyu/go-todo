@@ -35,14 +35,10 @@ func (c Config) Init() error {
 	if error != nil {
 		fmt.Println("Creating ~/.external_config/go_todo/config.json")
 
-		var _, dirError = os.Stat(configDirPath)
-
-		// Full dir doesnt exist, will make the directory
-		if dirError != nil {
-			var mkdirError = os.MkdirAll(configDirPath, 0750)
-			if mkdirError != nil {
-				logger.LogError(mkdirError)
-				return error
+		if _, dirError := os.Stat(configDirPath); dirError != nil {
+			// Full dir doesnt exist, will make the directory
+			if funcErr := createDir(configDirPath); funcErr != nil {
+				return funcErr
 			}
 		}
 
@@ -62,5 +58,18 @@ func (c Config) Init() error {
 
 	}
 
+	return nil
+}
+
+func createDir(configDirPath string) error {
+	var mkdirError = os.MkdirAll(configDirPath, 0750)
+	if mkdirError != nil {
+		logger.LogError(mkdirError)
+		return mkdirError
+	}
+	return nil
+}
+
+func createFile(filePath string) error {
 	return nil
 }

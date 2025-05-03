@@ -20,6 +20,8 @@ Data Storage: JSON
 
 Step 0)
 - Create/check install folder @ ~
+- ~/.external -> config.json? -> read 
+  - add env vars from file or use struct? (probably struct)
 
 Step 1)
 - Create a json parser

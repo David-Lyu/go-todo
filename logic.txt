@@ -18,6 +18,9 @@ Data Storage: JSON
 - No ORM this time takes to long
 - For learning purposes file parsing is good
 
+Step 0)
+- Create/check install folder @ ~
+
 Step 1)
 - Create a json parser
 

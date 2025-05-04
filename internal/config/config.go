@@ -41,21 +41,16 @@ func (c Config) Init() error {
 				return funcErr
 			}
 		}
+		// creating missing file
+		file, error = initFile(configDirPath, configFilePath, &c)
 
-		//Creating file if dir exists
-		file, error = os.Create(configDirPath + configFilePath)
-		c.TodoPath = configDirPath + "todo.json"
-		c.IsCreated = true
-
-		var configContents, jsonError = json.Marshal(c)
-
-		if jsonError != nil {
-			logger.LogError(jsonError)
-			return jsonError
+		if error != nil {
+			return error
 		}
+	}
 
-		file.Write(configContents)
-
+	if file == nil {
+		os.Open(configDirPath + configFilePath)
 	}
 
 	return nil
@@ -70,6 +65,25 @@ func createDir(configDirPath string) error {
 	return nil
 }
 
-func createFile(filePath string) error {
-	return nil
+func initFile(dirPath string, filePath string, c *Config) (*os.File, error) {
+	file, error := os.Create(dirPath + filePath)
+
+	if error != nil {
+		logger.LogError(error)
+		return file, error
+	}
+
+	c.TodoPath = dirPath + "todo.json"
+	c.IsCreated = true
+
+	var configContents, jsonError = json.Marshal(c)
+
+	if jsonError != nil {
+		logger.LogError(jsonError)
+		return file, jsonError
+	}
+	//Creating file if dir exists
+	file.Write(configContents)
+
+	return file, nil
 }

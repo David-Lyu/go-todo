@@ -17,7 +17,6 @@ func (c Config) Init() error {
 	var configDirPath = ""
 	var configFilePath = "config.json"
 	var error error
-	var file *os.File
 
 	configDirPath, error = os.UserHomeDir()
 	if error != nil {
@@ -42,18 +41,37 @@ func (c Config) Init() error {
 			}
 		}
 		// creating missing file
-		file, error = initFile(configDirPath, configFilePath, &c)
+		error = initFile(configDirPath, configFilePath, &c)
 
 		if error != nil {
 			return error
 		}
 	}
+	// No error means file exists.
+	if c.TodoPath != "" {
+		buff, readErr := os.ReadFile(configDirPath + configFilePath)
+		if readErr != nil {
+			logger.LogError(error)
+			return readErr
+		}
 
-	if file == nil {
-		os.Open(configDirPath + configFilePath)
+		unmarshalErr := json.Unmarshal(buff, &c)
+		if unmarshalErr != nil {
+			logger.LogError(unmarshalErr)
+			return unmarshalErr
+		}
+		if c.TodoPath == "" {
+			panic("Todo Path needs to be set in config file")
+		}
+		c.IsCreated = true
 	}
 
 	return nil
+}
+
+// Is this even needed? Only if todopath is
+func (c Config) GetTodoPath() string {
+	return c.TodoPath
 }
 
 func createDir(configDirPath string) error {
@@ -65,12 +83,12 @@ func createDir(configDirPath string) error {
 	return nil
 }
 
-func initFile(dirPath string, filePath string, c *Config) (*os.File, error) {
+func initFile(dirPath string, filePath string, c *Config) error {
 	file, error := os.Create(dirPath + filePath)
 
 	if error != nil {
 		logger.LogError(error)
-		return file, error
+		return error
 	}
 
 	c.TodoPath = dirPath + "todo.json"
@@ -80,10 +98,24 @@ func initFile(dirPath string, filePath string, c *Config) (*os.File, error) {
 
 	if jsonError != nil {
 		logger.LogError(jsonError)
-		return file, jsonError
+		return jsonError
 	}
 	//Creating file if dir exists
-	file.Write(configContents)
+	_, error = file.Write(configContents)
+	if error != nil {
+		logger.LogError(error)
+		return error
+	}
+	_, error = file.Seek(0, 0)
+	if error != nil {
+		logger.LogError(error)
+		return error
+	}
+	error = file.Close()
+	if error != nil {
+		logger.LogError(error)
+		return error
+	}
 
-	return file, nil
+	return nil
 }

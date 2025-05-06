@@ -12,7 +12,7 @@ type Config struct {
 	IsCreated bool
 }
 
-func (c Config) Init() error {
+func (c *Config) Init() error {
 
 	var configDirPath = ""
 	var configFilePath = "config.json"
@@ -41,14 +41,14 @@ func (c Config) Init() error {
 			}
 		}
 		// creating missing file
-		error = initFile(configDirPath, configFilePath, &c)
+		error = initFile(configDirPath, configFilePath, c)
 
 		if error != nil {
 			return error
 		}
 	}
 	// No error means file exists.
-	if c.TodoPath != "" {
+	if c.TodoPath == "" {
 		buff, readErr := os.ReadFile(configDirPath + configFilePath)
 		if readErr != nil {
 			logger.LogError(error)

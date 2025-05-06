@@ -7,7 +7,7 @@ type TodoTask struct {
 	alert         bool
 }
 
-// type TodoParentTask struct {
-// 	subtask []TodoTask
-// 	TodoTask
-// }
+type Task struct {
+	subtask TodoTask
+	TodoTask
+}

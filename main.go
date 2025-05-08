@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"go-todo/internal/config"
 	"go-todo/internal/logger"
+	"go-todo/internal/todo"
 	"log"
+	"os"
 )
 
 func main() {
@@ -12,16 +15,36 @@ func main() {
 
 	// install configs
 	var conf = config.Config{}
-	var error = conf.Init()
-	if error != nil {
-		log.Fatal(error)
+	var globalError = conf.Init()
+	if globalError != nil {
+		log.Fatal(globalError)
 	}
 
 	//grab todos
-	var todo = config.TodoList{}
-	error = todo.Init(conf.TodoPath)
+	var todoList = todo.TodoList{}
+	globalError = todoList.Init(conf.TodoPath)
+	fmt.Println(todoList)
 
-	for shouldExit != true {
+	// var test []byte
+	// var testError error
+	// test, testError = io.ReadAll(os.Stdin)
+
+	// if testError != nil {
+	// 	fmt.Println(testError)
+	// 	return
+	// }
+
+	// if test != nil {
+	// 	return
+	// }
+	// fmt.Println(test)
+
+	s := bufio.NewScanner(os.Stdin)
+	for s.Scan() {
+		log.Println("line", s.Text())
+	}
+
+	for shouldExit != false {
 		var input string
 
 		fmt.Println("Press 1 to add \nPress 0 to exit")

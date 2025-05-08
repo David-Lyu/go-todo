@@ -1,14 +1,11 @@
-package config
+package todo
 
 import (
 	"encoding/json"
 	"fmt"
 	"go-todo/internal/logger"
-	"go-todo/internal/models"
 	"os"
 )
-
-type TodoList []models.TodoTask
 
 /*
 Checks to see if json config exists, if not it creates it
@@ -24,22 +21,20 @@ func (t *TodoList) Init(filePath string) error {
 		var file, fileErr = os.Create(filePath)
 
 		if fileErr != nil {
-			logger.LogError(fileErr)
-			return fileErr
+			return logger.HandleError(fileErr, true)
 		}
 
 		var byte, jsonErr = json.Marshal(t)
 
 		if jsonErr != nil {
-			logger.LogError(jsonErr)
-			return jsonErr
+			return logger.HandleError(jsonErr, true)
 		}
 
 		_, error = file.Write(byte)
 		if error != nil {
-			logger.LogError(error)
-			return error
+			return logger.HandleError(error, true)
 		}
+
 		error = file.Sync()
 		if error != nil {
 			logger.LogError(error)
@@ -56,11 +51,10 @@ func (t *TodoList) Init(filePath string) error {
 	var byte, readErr = os.ReadFile(filePath)
 
 	if readErr != nil {
-		logger.LogError(readErr)
-		return readErr
+		return logger.HandleError(readErr, true)
 	}
 
-	json.Unmarshal(byte, &t)
+	json.Unmarshal(byte, &t.todoList)
 
 	return nil
 }

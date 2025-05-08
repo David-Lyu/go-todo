@@ -1,13 +1,13 @@
 package models
 
 type TodoTask struct {
-	task          string
-	startDateTime string
-	endDateTime   string
-	alert         bool
+	Task          string
+	StartDateTime string
+	EndDateTime   string
+	Alert         bool
 }
 
 type Task struct {
-	subtask TodoTask
+	Subtask TodoTask
 	TodoTask
 }

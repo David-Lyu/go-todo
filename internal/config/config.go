@@ -20,9 +20,7 @@ func (c *Config) Init() error {
 
 	configDirPath, error = os.UserHomeDir()
 	if error != nil {
-		//handle error here
-		logger.LogError("Error getting User Dir")
-		return error
+		return logger.HandleError(error, true)
 	}
 
 	configDirPath += string(os.PathSeparator) + ".external_configs"
@@ -51,15 +49,14 @@ func (c *Config) Init() error {
 	if c.TodoPath == "" {
 		buff, readErr := os.ReadFile(configDirPath + configFilePath)
 		if readErr != nil {
-			logger.LogError(error)
-			return readErr
+			return logger.HandleError(error, true)
 		}
 
 		unmarshalErr := json.Unmarshal(buff, &c)
 		if unmarshalErr != nil {
-			logger.LogError(unmarshalErr)
-			return unmarshalErr
+			return logger.HandleError(unmarshalErr, true)
 		}
+
 		if c.TodoPath == "" {
 			panic("Todo Path needs to be set in config file")
 		}

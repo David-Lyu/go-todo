@@ -2,10 +2,10 @@ package todo
 
 import "go-todo/internal/models"
 
-type TodoList struct {
-	todoList []models.TodoTask
+type Todo struct {
+	TodoList models.TodoList
 }
 
-func (t *TodoList) AddTodo(task models.TodoTask) {
-	t.todoList = append(t.todoList, task)
+func (t *Todo) AddTodo(task models.Task) {
+	t.TodoList = append(t.TodoList, task)
 }

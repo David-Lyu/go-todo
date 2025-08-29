@@ -1,5 +1,7 @@
 package models
 
+type TodoList []Task
+
 type TodoTask struct {
 	Task          string
 	StartDateTime string

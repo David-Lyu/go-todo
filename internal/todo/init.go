@@ -10,7 +10,7 @@ import (
 /*
 Checks to see if json config exists, if not it creates it
 */
-func (t *TodoList) Init(filePath string) error {
+func (t *Todo) Init(filePath string) error {
 
 	// stat file if not exist then
 	var _, error = os.Stat(filePath)
@@ -54,7 +54,7 @@ func (t *TodoList) Init(filePath string) error {
 		return logger.HandleError(readErr, true)
 	}
 
-	json.Unmarshal(byte, &t.todoList)
+	json.Unmarshal(byte, &t.TodoList)
 
 	return nil
 }

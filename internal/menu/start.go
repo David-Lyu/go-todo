@@ -1,23 +1,23 @@
 package menu
 
 import (
-	"bufio"
 	"fmt"
 	"go-todo/internal/logger"
-	"log"
-	"os"
+	"go-todo/internal/todo"
 )
 
 type StartMenu struct {
 	UserChoice int8
 }
 
-func (menu *StartMenu) MenuStart() {
+func (menu *StartMenu) MenuStart(todoStruct *todo.Todo) {
 
-	s := bufio.NewScanner(os.Stdin)
-	for s.Scan() {
-		log.Println("line", s.Text())
-	}
+	// s := bufio.NewScanner(os.Stdin)
+	// for s.Scan() {
+	// 	log.Println("line", s.Text())
+	// }
+
+	fmt.Println(todoStruct)
 
 	for menu.UserChoice != 4 {
 		var input string

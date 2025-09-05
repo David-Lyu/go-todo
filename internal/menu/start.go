@@ -32,6 +32,7 @@ func (menu *StartMenu) MenuStart(todoStruct *todo.Todo) {
 		switch input {
 		case "1":
 			fmt.Println("You pressed 1")
+			menu.UserChoice = 1
 		case "0":
 			fmt.Println("time to exit")
 			menu.UserChoice = 4
